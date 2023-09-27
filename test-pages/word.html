@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>环境 - Kiokun</title>
+
+	<style>
+		html {
+			background: #222;
+			color: white;
+			font-family: sans-serif;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: inherit;
+		}
+
+		main {
+			max-width: 1000px;
+			margin: 0 auto;
+			padding: 10px;
+		}
+
+		#site-nav {
+			display: flex;
+			align-items: center;
+			/* gap: 0.5rem; */
+			gap: 2%;
+		}
+
+		#site-nav a {
+			display: flex;
+			align-items: center;
+		}
+
+		#site-logo {
+			height: 2.5rem;
+			margin-right: 0.5rem;
+		}
+
+		#site-title {
+			font-size: 2rem;
+			font-weight: bold;
+			/* margin-right: 0.5rem; */
+		}
+
+		#search-container {
+
+			flex-grow: 1;
+			display: flex;
+			border: 2px solid #888;
+			border-radius: 2px;
+		}
+
+		#searchInput {
+			/* we have to use camelcase to reference in script */
+			flex-grow: 1;
+			background: #333;
+			border: 0;
+			padding: 0.5rem;
+			color: white;
+		}
+
+		#search-button {
+			/* padding: 0; */
+			height: 2rem;
+			width: 2rem;
+			background-color: #888;
+			cursor: pointer;
+			color: white;
+			border: 0;
+			font-size: 1.2rem;
+			text-align: center;
+			line-height: 1.2rem;
+
+		}
+
+		#word-hero {
+			margin-top: 1rem;
+		}
+
+		#word-hero h1 {
+			margin: 0;
+			font-size: 4rem;
+		}
+
+		#word-hero small {
+			font-size: 1rem;
+			margin-bottom: 1rem;
+			margin-left: 1rem;
+		}
+
+		#word-hero ruby {
+			font-size: 5rem;
+			display: inline-flex;
+			flex-direction: column-reverse;
+			/* font-weight: bold; */
+		}
+
+		#word-hero ruby span {
+
+			/* font-family: serif; */
+		}
+
+		#word-hero ruby rt {
+			font-size: 1rem;
+			margin-bottom: -0.8rem;
+			display: inline;
+			line-height: 1;
+			height: 1rem;
+			font-family: sans-serif;
+			text-align: center;
+		}
+
+		.word-hero-row {
+			display: flex;
+			align-items: flex-end;
+		}
+
+
+		/* .jp-sans {
+			font-family: "Source Han Sans", "源ノ角ゴシック", "Hiragino Sans", "HiraKakuProN-W3", "Hiragino Kaku Gothic ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", "Noto Sans", "Noto Sans CJK JP", "メイリオ", Meiryo, "游ゴシック", YuGothic, "ＭＳ Ｐゴシック", "MS PGothic", "ＭＳ ゴシック", "MS Gothic", sans-serif;
+		}
+
+		.jp-sans:hover {
+			font-family: "HiraMinProN-W3", "Hiragino Mincho ProN W3", "Hiragino Mincho ProN", "ヒラギノ明朝 ProN W3", "游明朝", YuMincho, "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", "MS Mincho", serif;
+		} */
+
+		.jp-sans {
+			font-family: 'メイリオ', Meiryo, 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', '游ゴシック', '游ゴシック体', YuGothic, 'Yu Gothic', 'ＭＳ ゴシック', 'MS Gothic', HiraKakuProN-W3, 'TakaoExゴシック', TakaoExGothic, 'MotoyaLCedar', 'Droid Sans Japanese', sans-serif;
+		}
+
+		.jp-sans:hover {
+			font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝', '游明朝体', YuMincho, 'Yu Mincho', 'ＭＳ 明朝', 'MS Mincho', HiraMinProN-W3, 'TakaoEx明朝', TakaoExMincho, 'MotoyaLCedar', 'Droid Sans Japanese', serif;
+		}
+
+		.sc-sans {
+			/* font-family: 'PingFang SC', 'Heiti SC', 'Microsoft YaHei', 'Source Han Sans CN', 'Noto Sans CJK SC', 'WenQuanYi Micro Hei', sans-serif; */
+		}
+
+		.sc-sans:hover {
+			font-family: 'Songti SC', 'STSong', 'SimSun', 'NSimSun', 'Source Han Serif CN', 'Noto Serif CJK SC', sans-serif;
+		}
+
+		.tc-sans {
+			/* font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', 'Source Han Sans TC', 'Noto Sans CJK TC', 'WenQuanYi Micro Hei', sans-serif; */
+		}
+
+		.tc-sans:hover {
+			font-family: 'Songti TC', 'STSong', 'LiSong Pro', 'PMingLiU', 'Source Han Serif TC', 'Noto Serif CJK TC', sans-serif;
+		}
+
+		.word-hero-char {
+			height: 6rem;
+		}
+	</style>
+
+</head>
+
+<body>
+	<main>
+
+		<header id="site-nav">
+			<a href="./">
+				<img id="site-logo" src="kiokun-logo.svg" alt="kiokun logo">
+				<span id="site-title">Kiokun</span>
+			</a>
+			<div id="search-container">
+				<input type="search" name="search" id="searchInput" placeholder="Search..." size="1">
+				<button id="search-button" onclick="search()">🔍︎</button>
+			</div>
+		</header>
+
+
+		<!-- https://en.wiktionary.org/wiki/%E7%92%B0%E5%A2%83 -->
+
+		<div id="word-hero">
+			<!-- 
+			<h1>环境 <small>simplified</small></h1>
+			<h1>環境 <small>traditional</small></h1> -->
+
+			<div class="word-hero-row">
+				<div class="sc-sans">
+
+					<ruby><span class="word-hero-char">环</span>
+						<rt>huán</rt>
+					</ruby><ruby><span class="word-hero-char">境</span>
+						<rt>jìng</rt>
+					</ruby>
+				</div>
+				<small>chinese simplified</small>
+			</div>
+			<div class="word-hero-row" style="margin-bottom: 1rem;">
+				<div class="tc-sans">
+					<ruby><span class="word-hero-char">環</span></ruby><ruby><span class="word-hero-char">境</span></ruby>
+				</div>
+				<small>chinese traditional</small>
+			</div>
+			<div class="word-hero-row">
+				<div class="jp-sans"><ruby><span class="word-hero-char">環</span>
+						<rt>かん</rt>
+					</ruby><ruby><span class="word-hero-char">境</span>
+						<rt>きょう</rt>
+					</ruby>
+				</div>
+				<small>japanese</small>
+			</div>
+		</div>
+
+		<p>🇨🇳: environment;
+			circumstances;
+			surroundings;
+			CL:個|个[ge4];
+			ambient</p>
+		<p>🇯🇵: environment; circumstance (n, adj-no)</p>
+
+		<p>Mnemonic goes here</p>
+
+	</main>
+
+
+	<script>
+		function search() {
+			// this is where you would check to see if it's a valid input
+			// i.e. a word in our dictionary, either Chinese or Japanese
+			// (or maybe even some day we can offer english search support hmm)
+			// but yeah you also display a row of autocomplete suggestions and
+			// either pressing enter or clicking the search button or clicking one
+			// of those options will go to that page immediately...
+
+			if (searchInput.value)
+				parent.location = `${searchInput.value}.html`;
+		}
+	</script>
+</body>
+
+</html>

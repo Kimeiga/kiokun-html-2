@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Chinese Character Search</title>
+	<script src="https://cdn.jsdelivr.net/npm/fuse.js@6/dist/fuse.basic.min.js"></script>
+	<style>
+		/* Add your styles here */
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			cursor: pointer;
+		}
+
+		.show {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<input type="text" id="search" placeholder="Type to search" oninput="debounceSearch()">
+	<div id="dropdown" class="dropdown-content"></div>
+
+	<script>
+		let fuse;
+		let dropdown = document.getElementById('dropdown');
+		let timeoutId;
+
+		// Load the JSON data and create a Fuse instance
+		async function loadData() {
+			const response = await fetch('cedict2.json');
+			const data = await response.json();
+
+			const dataList = Object.values(data); // Convert the object to an array of its values
+
+			// Setup Fuse.js
+			fuse = new Fuse(dataList, {
+				keys: ['traditional', 'simplified', 'pinyin', 'definitions'],
+				includeScore: true,
+				threshold: 0.3 // Adjust as needed
+			});
+		}
+
+		// Debounce the search input
+		function debounceSearch() {
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => {
+				performSearch();
+			}, 300); // Adjust the delay as needed
+		}
+
+		// Perform the search and display the dropdown
+		function performSearch() {
+			const query = document.getElementById('search').value;
+			if (!query) {
+				dropdown.classList.remove('show');
+				return;
+			}
+
+			const results = fuse.search(query);
+			dropdown.innerHTML = '';
+			results.forEach(result => {
+				const div = document.createElement('div');
+				const item = result.item;
+				div.textContent = `${item.traditional} - ${item.simplified} - ${item.definitions.join(', ')}`;
+				div.onclick = () => window.location.href = `/character/${item.traditional}`;
+				dropdown.appendChild(div);
+			});
+			dropdown.classList.add('show');
+		}
+
+		loadData();
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Chinese Character Search</title>
+	<script src="https://cdn.jsdelivr.net/npm/fuse.js@6/dist/fuse.basic.min.js"></script>
+	<style>
+		/* Add your styles here */
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			cursor: pointer;
+		}
+
+		.show {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<input type="text" id="search" placeholder="Type to search" oninput="performSearch()">
+	<div id="dropdown" class="dropdown-content"></div>
+
+	<script>
+		let fuse;
+		let dropdown = document.getElementById('dropdown');
+
+		// Load the JSON data and create a Fuse instance
+		async function loadData() {
+			// You can merge the lists of traditional and simplified characters into a single list for searching
+			const response = await fetch('traditional_list.json');
+			const traditionalList = await response.json();
+
+			const responseSimplified = await fetch('simplified_to_traditional.json');
+			const simplifiedList = Object.keys(await responseSimplified.json());
+
+			const mergedList = [...traditionalList, ...simplifiedList];
+
+			// Setup Fuse.js
+			fuse = new Fuse(mergedList, {
+				includeScore: true,
+				threshold: 0.3 // Adjust as needed
+			});
+		}
+
+		// Perform the search and display the dropdown
+		function performSearch() {
+			const query = document.getElementById('search').value;
+			if (!query) {
+				dropdown.classList.remove('show');
+				return;
+			}
+
+			const results = fuse.search(query);
+			dropdown.innerHTML = '';
+			results.forEach(result => {
+				const div = document.createElement('div');
+				div.textContent = result.item;
+				div.onclick = () => window.location.href = `/character/${result.item}`;
+				dropdown.appendChild(div);
+			});
+			dropdown.classList.add('show');
+		}
+
+		loadData();
+	</script>
+</body>
+
+</html>
